@@ -1,2 +1,2 @@
 # Bootcamp1
-CEN3031 - Bootcamp Assignment 1
+CEN3031 - Bootcamp Assignments
