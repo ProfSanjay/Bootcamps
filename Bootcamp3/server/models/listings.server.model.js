@@ -1,40 +1,33 @@
-//You can replace this entire file with your Bootcamp Assignment #2 - ListingSchema.js File
+var mongoose = require('mongoose'),
+  Schema = mongoose.Schema;
 
-/* Import mongoose and define any variables needed to create the schema */
-var mongoose = require('mongoose'), 
-    Schema = mongoose.Schema;
-
-/* Create your schema for the data in the listings.json file that will define how data is saved in your database
-     See https://mongoosejs.com/docs/guide.html for examples for creating schemas
-     See also https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
-  */
+//Listing Schema
 var listingSchema = new Schema({
-  /* Your code for a schema here */ 
-  code: {type: String, required: true},
-  name: {type: String, required:true},
+  code: { type: String, required: true },
+  name: { type: String, required: true },
   coordinates: {
     latitude: Number,
     longitude: Number
   },
   address: String
-  //Check out - https://mongoosejs.com/docs/guide.html
 });
 
-/* Create a 'pre' function that adds the updated_at (and created_at if not already there) property 
-   See https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
-*/
-listingSchema.pre('save', function(next) {
-  /* your code here */
-  var date = new Date();
-  this.updated_at = date;
-  if(!this.created_at)
-    this.created_at = date;
+//Before saving, do the following
+listingSchema.pre('save', function (next) {
+  // Get the current date
+  var currentDate = new Date();
+
+  // Change the updated_at field to the current date
+  this.updated_at = currentDate;
+
+  // If created_at doesn't exist, add that to the field
+  if (!this.created_at) {
+    this.created_at = currentDate;
+  }
+
   next();
 });
 
-/* Use your schema to instantiate a Mongoose model */
-//Check out - https://mongoosejs.com/docs/guide.html#models
-var Listing = mongoose.model('Listinng', listingSchema);
-
-/* Export the model to make it avaiable to other parts of your Node application */
+// Instantiate and export a mongoose model
+var Listing = mongoose.model('Listing', listingSchema);
 module.exports = Listing;
